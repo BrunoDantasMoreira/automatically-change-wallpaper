@@ -5,15 +5,20 @@ import time
 
 def screenshot(video):
     
-    # Read the video from specified path
-    cam = cv2.VideoCapture('video')
-    intvl = 2 #interval in second(s)
+    cam = cv2.VideoCapture(video)
+    if not cam.isOpened():
+        print("Error: Unable to open video.")
+        exit()
+
+    intvl = 3 #interval in second(s)
     fps = int(cam.get(cv2.CAP_PROP_FPS))
-    currentFrame = 0
+    currentFrame = 500
+    index = 0
+    all_prints = []
     
     try:
-        if not os.path.exists('data'):
-            os.makedirs('data')
+        if not os.path.exists(r'C:\Users\Dell\Pictures\WallPapers\data'):
+            os.makedirs(r'C:\Users\Dell\Pictures\WallPapers\data')
     
     except OSError:
         print('Error: Creating directory of data')
@@ -24,9 +29,11 @@ def screenshot(video):
         ret, frame = cam.read()
         if ret:
             if(currentFrame % (fps*intvl) == 0):
-                name = './data/frame' + str(currentFrame) + '.jpg'
+                name = fr'C:\Users\Dell\Pictures\WallPapers\data\frame{str(index)}.jpg'
                 print('Creating... ', name)
                 cv2.imwrite(name, frame)
+                index += 1
+                all_prints.append(name)
             currentFrame += 1
     
         else:
@@ -34,5 +41,7 @@ def screenshot(video):
     
     cam.release()
     cv2.destroyAllWindows()
+
+    return all_prints
 
 
