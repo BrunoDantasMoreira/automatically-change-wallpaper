@@ -1,7 +1,8 @@
 # Import all necesary libraries
 import cv2
 import os 
-import time
+from PIL import Image
+import numpy as np
 
 def screenshot(video):
     
@@ -13,7 +14,7 @@ def screenshot(video):
     intvl = 3 #interval in second(s)
     fps = int(cam.get(cv2.CAP_PROP_FPS))
     currentFrame = 500
-    index = 0
+    index = 794
     all_prints = []
     
     try:
@@ -31,7 +32,16 @@ def screenshot(video):
             if(currentFrame % (fps*intvl) == 0):
                 name = fr'C:\Users\Dell\Pictures\WallPapers\data\frame{str(index)}.jpg'
                 print('Creating... ', name)
-                cv2.imwrite(name, frame)
+
+                # Cropping the image to get rid of the black bar
+                pil_img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+                box = (0, 90, 1220, 630)
+                cropped_img = pil_img.crop(box)
+                cropped_frame = cv2.cvtColor(np.array(cropped_img), cv2.COLOR_RGB2BGR)
+
+                # Saving 
+                cv2.imwrite(name, cropped_frame)
+
                 index += 1
                 all_prints.append(name)
             currentFrame += 1
