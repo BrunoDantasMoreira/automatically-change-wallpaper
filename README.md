@@ -60,7 +60,7 @@ Add screenshots or examples here to showcase how the tool works.
 
 ## License
 
-This project is licensed under the MIT License. See LICENSE for details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 
 
