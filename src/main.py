@@ -1,13 +1,15 @@
 import save_frame as sf
-import change_backgroud as cb
+import change_background as cb
 import sys 
 import time
 
-prints_file_path = r'D:\Codes\Python\automatically-change-wallpaper\prints.txt'
-base_path = r"C:\Users\Dell\Pictures\WallPapers\data\frame"
+prints_file_path = r'../output/prints.txt'
+base_path = r'../output/data'
+status = r'../assets/current.txt'
+
 with open(prints_file_path, 'r') as txt:
     prints = txt.readlines()
-with open(r'D:\Codes\Python\automatically-change-wallpaper\current.txt', 'r') as txt:
+with open(status, 'r') as txt:
     chosen_frame = int(txt.read())
 img = fr"{prints[chosen_frame].strip()}"
 
@@ -25,7 +27,7 @@ def show_intro():
 
 def capture_frames(video_path, interval):
     print(f"Capturing frames from {video_path} every {interval} frames...")
-    default_video = r'C:\Users\Dell\Videos\Arcane\ArcaneS1E5.mp4'
+    default_video = r'../assets/Arcane Season 2 .mp4'
     sf.screenshot(video_path)
 
 while True:

@@ -18,8 +18,8 @@ def screenshot(video):
     all_prints = []
     
     try:
-        if not os.path.exists(r'C:\Users\Dell\Pictures\WallPapers\data'):
-            os.makedirs(r'C:\Users\Dell\Pictures\WallPapers\data')
+        if not os.path.exists(r'../output/data'):
+            os.makedirs(r'../output/data')
     
     except OSError:
         print('Error: Creating directory of data')
@@ -30,7 +30,7 @@ def screenshot(video):
         ret, frame = cam.read()
         if ret:
             if(currentFrame % (fps*intvl) == 0):
-                name = fr'C:\Users\Dell\Pictures\WallPapers\data\frame{str(index)}.jpg'
+                name = fr'../output/data/frame{str(index)}.jpg'
                 print('Creating... ', name)
 
                 # Cropping the image to get rid of the black bar
@@ -44,7 +44,7 @@ def screenshot(video):
 
                 index += 1
                 all_prints.append(name)
-                with open(r'D:\Codes\Python\automatically-change-wallpaper\prints.txt', 'a') as txt:
+                with open(r'../output/prints.txt', 'a') as txt:
                     print('Creating... ', name)
                     txt.write(f'{name}\n')
 
