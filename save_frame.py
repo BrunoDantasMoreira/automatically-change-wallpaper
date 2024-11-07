@@ -14,7 +14,7 @@ def screenshot(video):
     intvl = 3 #interval in second(s)
     fps = int(cam.get(cv2.CAP_PROP_FPS))
     currentFrame = 500
-    index = 794
+    index = 3058
     all_prints = []
     
     try:
@@ -44,6 +44,10 @@ def screenshot(video):
 
                 index += 1
                 all_prints.append(name)
+                with open(r'D:\Codes\Python\automatically-change-wallpaper\prints.txt', 'a') as txt:
+                    print('Creating... ', name)
+                    txt.write(f'{name}\n')
+
             currentFrame += 1
     
         else:
