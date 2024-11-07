@@ -51,13 +51,6 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-## Configuration
-
-Specify the folder where frames should be saved and configure any CLI options for ease of use.
-Screenshots
-
-Add screenshots or examples here to showcase how the tool works.
-
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE.md) for details.
