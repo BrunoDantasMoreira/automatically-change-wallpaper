@@ -2,6 +2,9 @@
 
 A simple Python CLI tool for generating wallpapers from video frames and updating your wallpaper with a new frame each time you run it.
 
+![apresentation](https://github.com/user-attachments/assets/12556d65-a598-4bc5-8a28-bd001a098089)
+
+
 ## Table of Contents
 - [Features](#features)
 - [Usage](#usage)
