@@ -1,4 +1,4 @@
-# Import all necesary libraries
+from pathlib import Path
 import cv2
 import os 
 from PIL import Image
@@ -6,20 +6,24 @@ import numpy as np
 
 def screenshot(video):
     
+    if not Path(video).exists():
+        print(f"Error: Video file '{video}' not found.")
+        return
+    
     cam = cv2.VideoCapture(video)
+    print(video)
     if not cam.isOpened():
         print("Error: Unable to open video.")
         exit()
 
     intvl = 3 #interval in second(s)
     fps = int(cam.get(cv2.CAP_PROP_FPS))
-    currentFrame = 500
-    index = 3058
-    all_prints = []
+    currentFrame = 0
+    index = 0
     
     try:
-        if not os.path.exists(r'../output/data'):
-            os.makedirs(r'../output/data')
+        if not os.path.exists(Path('./output/data')):
+            os.makedirs(Path('./output/data'))
     
     except OSError:
         print('Error: Creating directory of data')
@@ -30,8 +34,7 @@ def screenshot(video):
         ret, frame = cam.read()
         if ret:
             if(currentFrame % (fps*intvl) == 0):
-                name = fr'../output/data/frame{str(index)}.jpg'
-                print('Creating... ', name)
+                name = Path(f'./output/data/frame{str(index)}.jpg')
 
                 # Cropping the image to get rid of the black bar
                 pil_img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
@@ -41,13 +44,10 @@ def screenshot(video):
 
                 # Saving 
                 cv2.imwrite(name, cropped_frame)
+                print(f"Capturing frames from {name} every {intvl} frames...")
+
 
                 index += 1
-                all_prints.append(name)
-                with open(r'../output/prints.txt', 'a') as txt:
-                    print('Creating... ', name)
-                    txt.write(f'{name}\n')
-
             currentFrame += 1
     
         else:
@@ -56,6 +56,5 @@ def screenshot(video):
     cam.release()
     cv2.destroyAllWindows()
 
-    return all_prints
 
 

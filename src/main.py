@@ -1,67 +1,76 @@
-import save_frame as sf
-import change_background as cb
 import sys 
 import time
+from pathlib import Path
+from colorama import Fore, Style, init
+init(autoreset=True)
 
-prints_file_path = r'../output/prints.txt'
-base_path = r'../output/data'
-status = r'../assets/current.txt'
+import save_frame as sf
+import change_background as cb
 
-with open(prints_file_path, 'r') as txt:
-    prints = txt.readlines()
-with open(status, 'r') as txt:
-    chosen_frame = int(txt.read())
-img = fr"{prints[chosen_frame].strip()}"
-
+prints_file_path = Path('./output/prints.txt')
+base_path = Path('./output/data')
+status = Path('./assets/current.txt')
 
 def show_intro():
-    print("-" * 60)
-    print("      Video Wallpaper CLI Tool      ")
-    print("-" * 60)
-    print("Welcome! This program allows you to:")
-    print("1. Capture frames from a video and save them as images.")
-    print("2. Set your wallpaper to a frame from a video sequence.")
-    print("Enjoy creating unique wallpapers from any video of your choice!")
-    print("-" * 60)
+    print(Fore.CYAN + "-" * 60)
+    print(Fore.GREEN + center_text("Video Wallpaper CLI Tool"))
+    print(Fore.CYAN + "-" * 60)
+    print(Fore.YELLOW + center_text("Welcome! This program allows you to:"))
+    print(Fore.YELLOW + center_text("1. Capture frames from a video and save them as images."))
+    print(Fore.YELLOW + center_text("2. Set your wallpaper to a frame from a video sequence."))
+    print(Fore.YELLOW + center_text("Enjoy creating unique wallpapers from any video of your choice!"))
+    print(Fore.CYAN + "-" * 60)
     time.sleep(2)  # Wait 2 seconds before showing the menu
 
-def capture_frames(video_path, interval):
-    print(f"Capturing frames from {video_path} every {interval} frames...")
-    default_video = r'../assets/Arcane Season 2 .mp4'
+def MainMenu():
+    print("\n" + Fore.CYAN + "-" * 60)
+    print(Fore.GREEN + center_text("MAIN MENU"))
+    print(Fore.CYAN + "-" * 60)
+    print(Fore.MAGENTA + center_text("1 - Capture frames from video"))
+    print(Fore.MAGENTA + center_text("2 - Change wallpaper to next frame"))
+    print(Fore.MAGENTA + center_text("3 - Exit"))
+    print(Fore.CYAN + "-" * 60)
+
+def capture_frames():
+    video_path_input = input("Enter the path to the video file (press Enter to use default): ")
+    video_path = Path(video_path_input) if video_path_input else Path('./assets/ArcaneSeason2.mp4')
     sf.screenshot(video_path)
+
+def Change():
+    with open(status, 'r') as txt:
+        chosen_frame = int(txt.read())
+    chosen_frame += 1
+    print(chosen_frame)
+    img = Path(f"./output/data/frame{chosen_frame}.jpg").resolve()
+    cb.set_wallpaper(str(img))
+
+    with open(status, 'w') as txt:
+        txt.write(str(chosen_frame))
+
+def center_text(text, width=60):
+    return text.center(width)
+
+show_intro()
 
 while True:
 
     if len(sys.argv) > 1:
         if sys.argv[1].lower() == 'next':
-            chosen_frame += 1
-            cb.set_wallpaper(str(img))
-            with open(r'D:\Codes\Python\automatically-change-wallpaper\current.txt', 'w') as txt:
-                txt.write(str(chosen_frame))
+            Change()
             break
 
-    show_intro()
-    print("-" * 60)
-    print("           MAIN MENU           ")
-    print("-" * 60)
-    print("1 - Capture frames from video")
-    print("2 - Change wallpaper to next frame")
-    print("3 - Exit")
-    print("-" * 60)
+    
+    MainMenu()
     
     choice = input("Your option: ")
 
     if choice == "1":
-        video_path = input("Enter the path to the video file: ")
-        interval  = int(input("Enter frame interval (in sec): [default 3] "))
-        capture_frames(fr'{video_path}', interval)
+        capture_frames()
 
     elif choice == "2":
-        chosen_frame += 1
-        cb.set_wallpaper(str(img))
-        with open(r'D:\Codes\Python\automatically-change-wallpaper\current.txt', 'w') as txt:
-            txt.write(str(chosen_frame))
+        Change()
         input("Wallpaper changed. Press Enter to continue...")
+
 
     elif choice == "3":
         print("Exiting...")
